@@ -29,7 +29,7 @@ namespace Tarefa1.Controllers
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
-                Date = DateTime.Now.AddDays(index),
+                Date = DateTime.Now.AddDays(index), //pega a data atual
                 TemperatureC = rng.Next(-35, 60), //temperatura em celsius randomica
                 Summary = Summaries[rng.Next(Summaries.Length)] //randomicamente o sumario que agora está em portugues
             })
