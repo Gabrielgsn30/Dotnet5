@@ -31,7 +31,7 @@ namespace Tarefa1.Controllers
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = rng.Next(-35, 60), //temperatura em celsius randomica
-                Summary = Summaries[rng.Next(Summaries.Length)] //randomicamente o sumario que agr está em portugues
+                Summary = Summaries[rng.Next(Summaries.Length)] //randomicamente o sumario que agora está em portugues
             })
             .ToArray();
         }
