@@ -23,17 +23,10 @@ namespace Tarefa1.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpPut]
+        public String Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index), //pega a data atual
-                TemperatureC = rng.Next(-35, 60), //temperatura em celsius randomica
-                Summary = Summaries[rng.Next(Summaries.Length)] //randomicamente o sumario que agora está em portugues
-            })
-            .ToArray();
+            return "Hello";
         }
     }
 }
