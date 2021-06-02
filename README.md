@@ -4,40 +4,20 @@
 
 <!--ts-->
    * [Dotnet5webapi](#Dotnet5webapi)
-   * [Sobre](#Sobre)
-   * [Tabela de Conteudo](#tabela-de-conteudo)
    * [Instalacao](#Instalacao)
    * [Como usar](#como-usar)
-   * [Tabela de variaveis](#tabela-de-variaveis)
-   * [Tabela de Funcoes](#tabela-de-funcoes)
-   * [Modelo](#modelo)
-   * [Resultados](#resultados)
-   * [Tecnologias](#tecnologias)
 <!--te-->
 
-# Sobre
-
-
-# Tabela de Conteudo
 
 
 # Instalacao
-
+🛠️ Ferramentas: [.NET](https://dotnet.microsoft.com/download) - [VSCODE](https://code.visualstudio.com/) - [GIT](https://git-scm.com/) - [GITHUB DESKTOP](https://desktop.github.com/)
+Essas são todas as ferramentas necessárias para a excução do projeto,deve-se fazer o download e instalação de todas antes da execução do projeto.
 
 # Como usar
-
-
-# Tabela de variaveis
-Variaveis    | Descricao
--------------------------- | ------------------------------------------------------------------:
-
-# Tabela de Funcoes
-
+Após as ferramentas instaladas, deve-se clonar o projeto dester repositorio, e utilizando o VsCode deverá abrir o repositorio clonado através do git.
+Para a execução do projeto deve-se rodar o seguinte comando no terminal do proprio VsCode:
 ```dotnet
-
+dotnet run
 ```
 
-# Modelo
-
-  
-# Resultados
