@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 
 [ApiController]
 [Route("[controller]")]
@@ -9,6 +11,14 @@ public class DiretorController : ControllerBase {
     private readonly ApplicationDbContext _context;
     public DiretorController(ApplicationDbContext context){
         _context = context;
+
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Diretor>> Get(int id)
+    {
+        var diretor = await _context.Diretores.FirstOrDefaultAsync(diretor => diretor.Id == id);
+        return Ok(diretor);
 
     }
 
@@ -29,4 +39,23 @@ public class DiretorController : ControllerBase {
 
         return Ok(diretor);
         }
+    
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Diretor>> Put(int id, [FromBody] Diretor diretor)
+    {
+        diretor.Id = id;
+        _context.Diretores.Update(diretor);
+        await _context.SaveChangesAsync();
+
+        return Ok(diretor); 
+    } 
+
+    [HttpDelete("{id}")]
+    public ActionResult Delete(int id)
+    {
+        var diretor = _context.Diretores.FirstOrDefault(diretor => diretor.Id == id);
+        _context.Remove(diretor);
+        _context.SaveChangesAsync();
+        return Ok();
+    }
     }
