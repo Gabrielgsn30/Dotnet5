@@ -13,7 +13,7 @@ public class DiretorController : ControllerBase {
         _context = context;
 
     }
-
+    //Dando get passando referência do ID para trazer um diretor em específico
     [HttpGet("{id}")]
     public async Task<ActionResult<Diretor>> Get(int id)
     {
@@ -21,12 +21,13 @@ public class DiretorController : ControllerBase {
         return Ok(diretor);
 
     }
-
+    //Dando get para trazer todos os diretores
     [HttpGet]
     public async Task<List<Diretor>> Get(){
         return await _context.Diretores.ToListAsync();
        }
 
+    //Dando post para cadastrar um diretor
     [HttpPost]
     public async Task<ActionResult<Diretor>> Post([FromBody] Diretor diretor) {
         //Validacao para ver se o campo nome está preenchido está preenchido
@@ -40,6 +41,7 @@ public class DiretorController : ControllerBase {
         return Ok(diretor);
         }
     
+    //Dando put passando um id de referencia para atualizar alguma informação do diretor
     [HttpPut("{id}")]
     public async Task<ActionResult<Diretor>> Put(int id, [FromBody] Diretor diretor)
     {
@@ -50,6 +52,7 @@ public class DiretorController : ControllerBase {
         return Ok(diretor); 
     } 
 
+    //Dando delete passando um id em específico para deletar um diretor
     [HttpDelete("{id}")]
     public ActionResult Delete(int id)
     {
