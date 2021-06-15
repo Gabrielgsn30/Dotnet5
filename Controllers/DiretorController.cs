@@ -15,7 +15,7 @@ public class DiretorController : ControllerBase {
     }
     //Dando get passando referência do ID para trazer um diretor em específico
     [HttpGet("{id}")]
-    public async Task<ActionResult<Diretor>> Get(int id)
+    public async Task<ActionResult<Diretor>> Get(long id)
     {
         var diretor = await _context.Diretores.FirstOrDefaultAsync(diretor => diretor.Id == id);
         return Ok(diretor);
