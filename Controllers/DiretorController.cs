@@ -54,7 +54,7 @@ public class DiretorController : ControllerBase {
 
     //Dando delete passando um id em específico para deletar um diretor
     [HttpDelete("{id}")]
-    public ActionResult Delete(int id)
+    public ActionResult Delete(long id)
     {
         var diretor = _context.Diretores.FirstOrDefault(diretor => diretor.Id == id);
         _context.Remove(diretor);
