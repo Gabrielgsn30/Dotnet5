@@ -1,35 +1,58 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 
 [ApiController]
 [Route("[controller]")] //movie
 public class MovieController : ControllerBase
 {
-    public MovieController()
-    {
-        
+   private readonly ApplicationDbContext _context;
+    public MovieController(ApplicationDbContext context){
+        _context = context;
+
     }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Filme>> GetById(long id)
+    {
+         var filme = await _context.Filmes.FirstOrDefaultAsync(filme => filme.Id == id);
+         return Ok(filme);
+    }
+    
+    [HttpGet]
+    public async Task<List<Filme>> Get()
+    {
+        return await _context.Filmes.ToListAsync();
+    } 
 
     [HttpPost]
-    public string Post()
-    {
-        return "Post";
+    public async Task <ActionResult<Filme>> Post ([FromBody] Filme filme){        
+        _context.Filmes.Add(filme);
+        await _context.SaveChangesAsync();
+
+        return Ok (filme);
     }
 
-    [HttpPut]
-    public string Put()
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Filme>> Put(int id, [FromBody] Filme filme)
     {
-        return "Put";
+        filme.Id = id;
+        _context.Filmes.Update(filme);
+        await _context.SaveChangesAsync();
+
+        return Ok(filme);
     }
 
-    [HttpGet]
-    public string Get()
-    {
-        return "Get";
-    }
 
-    [HttpDelete]
-    public string Delete()
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete(int id)
     {
-        return "Delete";
+      var filme = await _context.Filmes.FirstOrDefaultAsync(filme => filme.Id == id);
+      _context.Remove(filme);
+      await _context.SaveChangesAsync();
+
+      return Ok(filme);
     }
 }

@@ -61,4 +61,4 @@ public class DiretorController : ControllerBase {
         _context.SaveChangesAsync();
         return Ok();
     }
-    }
+}
