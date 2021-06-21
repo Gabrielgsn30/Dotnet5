@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-public class DiretorOutputDTO {
+public class DiretorOutputPutDTO {
     public long Id { get; set; }
     public string Nome { get; set; }
 
-    public DiretorOutputDTO(long id, string nome) {
+    public DiretorOutputPutDTO(long id, string nome) {
         Id = id;
         Nome = nome;
     }

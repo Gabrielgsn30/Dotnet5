@@ -29,10 +29,10 @@ public class DiretorController : ControllerBase {
 
     //Dando post para cadastrar um diretor
     [HttpPost]
-    public async Task<ActionResult<DiretorOutputDTO>> Post([FromBody] DiretorInputDTO diretorInputDTO) {
+    public async Task<ActionResult<DiretorOutputPostDTO>> Post([FromBody] DiretorInputPostDTO diretorInputPostDTO) {
         //DTO faz a tranasferencia de dados entre o DTO para o objeto diretor(nesse caso o nome)
         //Vai pedir somente o nome para cadastro que realmente é o que deve ser digitado e nao os outros campos
-        var diretor = new Diretor(diretorInputDTO.Nome);
+        var diretor = new Diretor(diretorInputPostDTO.Nome);
         //Validacao para ver se o campo nome está preenchido está preenchido
         if (diretor.Nome  == null || diretor.Nome =="")
         {
@@ -42,19 +42,21 @@ public class DiretorController : ControllerBase {
         _context.Diretores.Add(diretor);
         await _context.SaveChangesAsync();
 
-        var diretorOutputDTO = new DiretorOutputDTO(diretor.Id,diretor.Nome);
-        return Ok(diretorOutputDTO);
+        var diretorOutputPostDTO = new DiretorOutputPostDTO(diretor.Id,diretor.Nome);
+        return Ok(diretorOutputPostDTO);
         }
     
     //Dando put passando um id de referencia para atualizar alguma informação do diretor
     [HttpPut("{id}")]
-    public async Task<ActionResult<Diretor>> Put(int id, [FromBody] Diretor diretor)
+    public async Task<ActionResult<DiretorOutputPutDTO>> Put(int id, [FromBody] DiretorInputPutDTO diretorInputPutDTO)
     {
+        var diretor = new Diretor(diretorInputPutDTO.Id);
         diretor.Id = id;
         _context.Diretores.Update(diretor);
         await _context.SaveChangesAsync();
+        var DiretorOutPutPutDTO = new DiretorOutputPutDTO(diretor.Id,diretor.Nome);
 
-        return Ok(diretor); 
+        return Ok(DiretorOutPutPutDTO); 
     } 
 
     //Dando delete passando um id em específico para deletar um diretor

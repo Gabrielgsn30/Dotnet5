@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-public class DiretorInputDTO{
+public class DiretorInputPostDTO{
 
     public string Nome {get;set;}
 }
