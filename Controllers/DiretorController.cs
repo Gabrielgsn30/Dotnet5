@@ -29,16 +29,21 @@ public class DiretorController : ControllerBase {
 
     //Dando post para cadastrar um diretor
     [HttpPost]
-    public async Task<ActionResult<Diretor>> Post([FromBody] Diretor diretor) {
+    public async Task<ActionResult<DiretorOutputDTO>> Post([FromBody] DiretorInputDTO diretorInputDTO) {
+        //DTO faz a tranasferencia de dados entre o DTO para o objeto diretor(nesse caso o nome)
+        //Vai pedir somente o nome para cadastro que realmente é o que deve ser digitado e nao os outros campos
+        var diretor = new Diretor(diretorInputDTO.Nome);
         //Validacao para ver se o campo nome está preenchido está preenchido
         if (diretor.Nome  == null || diretor.Nome =="")
         {
                 return Conflict("Campo nome é obrigatório, digite o nome");
         }
+
         _context.Diretores.Add(diretor);
         await _context.SaveChangesAsync();
 
-        return Ok(diretor);
+        var diretorOutputDTO = new DiretorOutputDTO(diretor.Id,diretor.Nome);
+        return Ok(diretorOutputDTO);
         }
     
     //Dando put passando um id de referencia para atualizar alguma informação do diretor
