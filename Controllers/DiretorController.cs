@@ -51,11 +51,13 @@ public class DiretorController : ControllerBase {
     public async Task<ActionResult<DiretorOutputPutDTO>> Put(int id, [FromBody] DiretorInputPutDTO diretorInputPutDTO)
     {
         var diretor = new Diretor(diretorInputPutDTO.Id);
+        
         diretor.Id = id;
+
         _context.Diretores.Update(diretor);
         await _context.SaveChangesAsync();
-        var DiretorOutPutPutDTO = new DiretorOutputPutDTO(diretor.Id,diretor.Nome);
 
+        var DiretorOutPutPutDTO = new DiretorOutputPutDTO(diretor.Id,diretor.Nome);
         return Ok(DiretorOutPutPutDTO); 
     } 
 
