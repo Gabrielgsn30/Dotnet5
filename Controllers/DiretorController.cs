@@ -32,6 +32,7 @@ public class DiretorController : ControllerBase {
     public async Task<ActionResult<DiretorOutputPostDTO>> Post([FromBody] DiretorInputPostDTO diretorInputPostDTO) {
         //DTO faz a tranasferencia de dados entre o DTO para o objeto diretor(nesse caso o nome)
         //Vai pedir somente o nome para cadastro que realmente é o que deve ser digitado e nao os outros campos
+        //variavel diretor vai instanciar um novo objetoInput
         var diretor = new Diretor(diretorInputPostDTO.Nome);
         //Validacao para ver se o campo nome está preenchido está preenchido
         if (diretor.Nome  == null || diretor.Nome =="")
@@ -50,6 +51,7 @@ public class DiretorController : ControllerBase {
     [HttpPut("{id}")]
     public async Task<ActionResult<DiretorOutputPutDTO>> Put(int id, [FromBody] DiretorInputPutDTO diretorInputPutDTO)
     {
+        //variavel diretor vai instanciar um novo objetoInput
         var diretor = new Diretor(diretorInputPutDTO.Nome);
 
         diretor.Id = id;
