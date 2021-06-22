@@ -15,16 +15,29 @@ public class DiretorController : ControllerBase {
     }
     //Dando get passando referência do ID para trazer um diretor em específico
     [HttpGet("{id}")]
-    public async Task<ActionResult<Diretor>> Get(long id)
+    public async Task<ActionResult<DiretorOutputGetByIdDTO>> Get(long id)
     {
         var diretor = await _context.Diretores.FirstOrDefaultAsync(diretor => diretor.Id == id);
-        return Ok(diretor);
+        var diretorOutputGetByIdDTO = new DiretorOutputGetByIdDTO(diretor.Id,diretor.Nome);
+        return Ok(diretorOutputGetByIdDTO);
 
     }
     //Dando get para trazer todos os diretores
     [HttpGet]
-    public async Task<List<Diretor>> Get(){
-        return await _context.Diretores.ToListAsync();
+    public async Task<List<DiretorOutputGetAllDTO>> Get(){
+
+        //https://forums.asp.net/t/2161265.aspx?How+can+I+implement+GetAll+Delete+Update+repository+from+Generic+Repository+into+repository
+        //jeito de implementar getall com DTO usando lista e selecionado os campos
+
+         var diretorOutputGetAllDTO = new List<DiretorOutputGetAllDTO>();
+         var diretor = await _context.Diretores.ToListAsync();
+
+         diretorOutputGetAllDTO.AddRange(diretor.Select(dir => new DiretorOutputGetAllDTO(){
+                Id=dir.Id,
+                Nome=dir.Nome
+         }).ToList());
+         return diretorOutputGetAllDTO;
+        
        }
 
     //Dando post para cadastrar um diretor
