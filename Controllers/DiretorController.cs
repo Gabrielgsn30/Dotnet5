@@ -50,8 +50,8 @@ public class DiretorController : ControllerBase {
     [HttpPut("{id}")]
     public async Task<ActionResult<DiretorOutputPutDTO>> Put(int id, [FromBody] DiretorInputPutDTO diretorInputPutDTO)
     {
-        var diretor = new Diretor(diretorInputPutDTO.Id);
-        
+        var diretor = new Diretor(diretorInputPutDTO.Nome);
+
         diretor.Id = id;
 
         _context.Diretores.Update(diretor);
