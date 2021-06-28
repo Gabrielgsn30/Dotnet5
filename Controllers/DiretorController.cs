@@ -19,6 +19,7 @@ public class DiretorController : ControllerBase {
     {
         var diretor = await _context.Diretores.FirstOrDefaultAsync(diretor => diretor.Id == id);
         var diretorOutputGetByIdDTO = new DiretorOutputGetByIdDTO(diretor.Id,diretor.Nome);
+        // poode passar por objetos entre diretorOutputGetByIdDTO recebe o diretor . id ou nome em vez de passar por parametro no new no construtor
         return Ok(diretorOutputGetByIdDTO);
 
     }
