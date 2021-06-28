@@ -15,34 +15,58 @@ public class MovieController : ControllerBase
 
     }
     [HttpGet("{id}")]
-    public async Task<ActionResult<Filme>> GetById(long id)
+    public async Task<ActionResult<MovieOutputGetByIdDTO>> GetById(long id)
     {
          var filme = await _context.Filmes.FirstOrDefaultAsync(filme => filme.Id == id);
-         return Ok(filme);
+         var movieOutputGetByIdDTO = new MovieOutputGetByIdDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId);
+         return Ok(movieOutputGetByIdDTO);
     }
     
     [HttpGet]
-    public async Task<List<Filme>> Get()
+    public async Task<List<MovieOutputGetAllDTO>> Get()
     {
-        return await _context.Filmes.ToListAsync();
+        //return await _context.Filmes.ToListAsync();
+         var movieOutputGetAllDTO = new List<MovieOutputGetAllDTO>();
+         var filme = await _context.Filmes.ToListAsync();
+
+         movieOutputGetAllDTO.AddRange(filme.Select(dir => new MovieOutputGetAllDTO(){
+                Id=dir.Id,
+                Titulo=dir.Titulo,
+                Ano=dir.Ano,
+                Genero=dir.Genero,
+                DiretorId=dir.DiretorId
+                
+         }).ToList());
+         return movieOutputGetAllDTO;
+
+
     } 
 
     [HttpPost]
-    public async Task <ActionResult<Filme>> Post ([FromBody] Filme filme){        
+    public async Task <ActionResult<MovieOutputPostDTO>> Post ([FromBody] MovieInputPostDTO movieInputPostDTO){  
+        var filme = new Filme(movieInputPostDTO.Titulo,movieInputPostDTO.Genero,movieInputPostDTO.Ano,movieInputPostDTO.DiretorId);  
+        if (filme.Titulo == null || filme.Titulo =="")
+        {
+            return Conflict("Campo título é obrigatório, digite o título do filme");
+        }    
         _context.Filmes.Add(filme);
         await _context.SaveChangesAsync();
 
-        return Ok (filme);
+        var movieOutputPostDTO = new MovieOutputPostDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId);
+        return Ok (movieOutputPostDTO);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Filme>> Put(int id, [FromBody] Filme filme)
+    public async Task<ActionResult<MovieOutputPutDTO>> Put(int id, [FromBody] MovieInputPutDTO movieInputPutDTO)
     {
+        var filme = new Filme(movieInputPutDTO.Titulo,movieInputPutDTO.Genero,movieInputPutDTO.Ano,movieInputPutDTO.DiretorId);
         filme.Id = id;
+
         _context.Filmes.Update(filme);
         await _context.SaveChangesAsync();
 
-        return Ok(filme);
+        var MovieOutputPutDTO = new MovieOutputPutDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId);
+        return Ok(MovieOutputPutDTO);
     }
 
 
