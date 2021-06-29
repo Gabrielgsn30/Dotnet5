@@ -9,12 +9,15 @@ public class MovieOutputGetByIdDTO {
 
     public long DiretorId { get; set; }
 
-    public MovieOutputGetByIdDTO(long id,string titulo, string ano, string genero, long diretorid) {
+    public string NomeDiretor{get;set;}
+
+    public MovieOutputGetByIdDTO(long id,string titulo, string ano, string genero, long diretorid,string nomediretor) {
         Id = id;
         Titulo = titulo;
         Ano = ano;
         Genero = genero;
         DiretorId = diretorid;
+        NomeDiretor = nomediretor;
 
     }
 }

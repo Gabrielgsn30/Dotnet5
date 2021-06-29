@@ -17,8 +17,8 @@ public class MovieController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<MovieOutputGetByIdDTO>> GetById(long id)
     {
-         var filme = await _context.Filmes.FirstOrDefaultAsync(filme => filme.Id == id);
-         var movieOutputGetByIdDTO = new MovieOutputGetByIdDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId);
+         var filme = await _context.Filmes.Include(filme => filme.Diretor).FirstOrDefaultAsync(filme => filme.Id == id);
+         var movieOutputGetByIdDTO = new MovieOutputGetByIdDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId,filme.Diretor.Nome);
          return Ok(movieOutputGetByIdDTO);
     }
     
@@ -45,10 +45,15 @@ public class MovieController : ControllerBase
     [HttpPost]
     public async Task <ActionResult<MovieOutputPostDTO>> Post ([FromBody] MovieInputPostDTO movieInputPostDTO){  
         var filme = new Filme(movieInputPostDTO.Titulo,movieInputPostDTO.Genero,movieInputPostDTO.Ano,movieInputPostDTO.DiretorId);  
+        //validacao ruim se está nullo
         if (filme.Titulo == null || filme.Titulo =="")
         {
             return Conflict("Campo título é obrigatório, digite o título do filme");
-        }    
+        } 
+        var diretor = await _context.Diretores.FirstOrDefaultAsync(diretor => diretor.Id == movieInputPostDTO.DiretorId); 
+        if (diretor == null) {
+            return NotFound("Diretor informado não existe");
+        }
         _context.Filmes.Add(filme);
         await _context.SaveChangesAsync();
 
