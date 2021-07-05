@@ -23,7 +23,7 @@ public class MovieController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<List<MovieOutputGetAllDTO>> Get()
+    public async Task<ActionResult<List<MovieOutputGetAllDTO>>> Get()
     {
         //return await _context.Filmes.ToListAsync();
          var movieOutputGetAllDTO = new List<MovieOutputGetAllDTO>();
@@ -37,8 +37,13 @@ public class MovieController : ControllerBase
                 DiretorId=dir.DiretorId
                 
          }).ToList());
-         return movieOutputGetAllDTO;
 
+        if(movieOutputGetAllDTO.Any()){
+
+             return movieOutputGetAllDTO;
+
+         }
+         return NotFound("Não existem diretores cadastrados!!!");
 
     } 
 

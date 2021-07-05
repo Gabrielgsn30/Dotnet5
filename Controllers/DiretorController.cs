@@ -25,7 +25,7 @@ public class DiretorController : ControllerBase {
     }
     //Dando get para trazer todos os diretores
     [HttpGet]
-    public async Task<List<DiretorOutputGetAllDTO>> Get(){
+    public async Task<ActionResult<List<DiretorOutputGetAllDTO>>> Get(){
 
         //https://forums.asp.net/t/2161265.aspx?How+can+I+implement+GetAll+Delete+Update+repository+from+Generic+Repository+into+repository
         //jeito de implementar getall com DTO usando lista e selecionado os campos
@@ -37,7 +37,13 @@ public class DiretorController : ControllerBase {
                 Id=dir.Id,
                 Nome=dir.Nome
          }).ToList());
-         return diretorOutputGetAllDTO;
+
+         if(diretorOutputGetAllDTO.Any()){
+
+             return diretorOutputGetAllDTO;
+
+         }
+         return NotFound("Não existem diretores cadastrados!!!");
         
        }
 
