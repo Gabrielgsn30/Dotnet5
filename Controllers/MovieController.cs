@@ -17,6 +17,8 @@ public class MovieController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<MovieOutputGetByIdDTO>> GetById(long id)
     {
+        try
+        {
          var filme = await _context.Filmes.Include(filme => filme.Diretor).FirstOrDefaultAsync(filme => filme.Id == id);
 
         if(filme == null){
@@ -25,11 +27,17 @@ public class MovieController : ControllerBase
         }
          var movieOutputGetByIdDTO = new MovieOutputGetByIdDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId,filme.Diretor.Nome);
          return Ok(movieOutputGetByIdDTO);
+         } catch (Exception ex)
+        { 
+            return Conflict(ex.Message);
+        }
     }
     
     [HttpGet]
     public async Task<ActionResult<List<MovieOutputGetAllDTO>>> Get()
     {
+        try
+        {
         //return await _context.Filmes.ToListAsync();
          var movieOutputGetAllDTO = new List<MovieOutputGetAllDTO>();
          var filme = await _context.Filmes.ToListAsync();
@@ -49,11 +57,18 @@ public class MovieController : ControllerBase
 
          }
          return NotFound("Não existem diretores cadastrados!!!");
+         } catch (Exception ex)
+        { 
+            return Conflict(ex.Message);
+        }
 
     } 
 
     [HttpPost]
     public async Task <ActionResult<MovieOutputPostDTO>> Post ([FromBody] MovieInputPostDTO movieInputPostDTO){  
+        try
+        {
+
         var filme = new Filme(movieInputPostDTO.Titulo,movieInputPostDTO.Genero,movieInputPostDTO.Ano,movieInputPostDTO.DiretorId);  
         //validacao ruim se está nullo
         if (filme.Titulo == null || filme.Titulo =="")
@@ -69,11 +84,18 @@ public class MovieController : ControllerBase
 
         var movieOutputPostDTO = new MovieOutputPostDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId);
         return Ok (movieOutputPostDTO);
+        } catch (Exception ex)
+        { 
+            return Conflict(ex.Message);
+        }
     }
 
     [HttpPut("{id}")]
     public async Task<ActionResult<MovieOutputPutDTO>> Put(int id, [FromBody] MovieInputPutDTO movieInputPutDTO)
     {
+        try
+        {
+
         var filme = new Filme(movieInputPutDTO.Titulo,movieInputPutDTO.Genero,movieInputPutDTO.Ano,movieInputPutDTO.DiretorId);
         filme.Id = id;
 
@@ -82,16 +104,26 @@ public class MovieController : ControllerBase
 
         var MovieOutputPutDTO = new MovieOutputPutDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId);
         return Ok(MovieOutputPutDTO);
+        } catch (Exception ex)
+        { 
+            return Conflict(ex.Message);
+        }
     }
 
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)
     {
+    try
+    {
       var filme = await _context.Filmes.FirstOrDefaultAsync(filme => filme.Id == id);
       _context.Remove(filme);
       await _context.SaveChangesAsync();
 
       return Ok(filme);
+      } catch (Exception ex)
+        { 
+            return Conflict(ex.Message);
+        }
     }
 }
