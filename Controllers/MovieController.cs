@@ -18,6 +18,11 @@ public class MovieController : ControllerBase
     public async Task<ActionResult<MovieOutputGetByIdDTO>> GetById(long id)
     {
          var filme = await _context.Filmes.Include(filme => filme.Diretor).FirstOrDefaultAsync(filme => filme.Id == id);
+
+        if(filme == null){
+            return NotFound("Filme nao encontrado!!!");
+            
+        }
          var movieOutputGetByIdDTO = new MovieOutputGetByIdDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId,filme.Diretor.Nome);
          return Ok(movieOutputGetByIdDTO);
     }
