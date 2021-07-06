@@ -18,8 +18,7 @@ public class DiretorController : ControllerBase {
 
     public async Task<ActionResult<DiretorOutputGetByIdDTO>> Get(long id)
     {
-        try
-        {
+
         var diretor = await _context.Diretores.FirstOrDefaultAsync(diretor => diretor.Id == id);
 
         if(diretor == null){
@@ -29,17 +28,10 @@ public class DiretorController : ControllerBase {
         var diretorOutputGetByIdDTO = new DiretorOutputGetByIdDTO(diretor.Id,diretor.Nome);
         // poode passar por objetos entre diretorOutputGetByIdDTO recebe o diretor . id ou nome em vez de passar por parametro no new no construtor
         return Ok(diretorOutputGetByIdDTO);
-        } catch (Exception ex)
-        { 
-            return Conflict(ex.Message);
-        }
-
-    }
+     }
     //Dando get para trazer todos os diretores
     [HttpGet]
     public async Task<ActionResult<List<DiretorOutputGetAllDTO>>> Get(){
-        try
-        {
 
         //https://forums.asp.net/t/2161265.aspx?How+can+I+implement+GetAll+Delete+Update+repository+from+Generic+Repository+into+repository
         //jeito de implementar getall com DTO usando lista e selecionado os campos
@@ -58,19 +50,12 @@ public class DiretorController : ControllerBase {
 
          }
          return NotFound("Não existem diretores cadastrados!!!");
-          
-        } catch (Exception ex)
-        { 
-            return Conflict(ex.Message);
-        }
-        
+                  
        }
 
     //Dando post para cadastrar um diretor
     [HttpPost]
     public async Task<ActionResult<DiretorOutputPostDTO>> Post([FromBody] DiretorInputPostDTO diretorInputPostDTO) {
-        try
-        {  
         //DTO faz a tranasferencia de dados entre o DTO para o objeto diretor(nesse caso o nome)
         //Vai pedir somente o nome para cadastro que realmente é o que deve ser digitado e nao os outros campos
         //variavel diretor vai instanciar um novo objetoInput
@@ -86,18 +71,13 @@ public class DiretorController : ControllerBase {
 
         var diretorOutputPostDTO = new DiretorOutputPostDTO(diretor.Id,diretor.Nome);
         return Ok(diretorOutputPostDTO);
-        } catch (Exception ex)
-            { 
-                return Conflict(ex.Message);
-            }
+
         }
     
     //Dando put passando um id de referencia para atualizar alguma informação do diretor
     [HttpPut("{id}")]
     public async Task<ActionResult<DiretorOutputPutDTO>> Put(int id, [FromBody] DiretorInputPutDTO diretorInputPutDTO)
     {
-        try
-        {
         //variavel diretor vai instanciar um novo objetoInput
         var diretor = new Diretor(diretorInputPutDTO.Nome);
 
@@ -108,26 +88,18 @@ public class DiretorController : ControllerBase {
 
         var DiretorOutPutPutDTO = new DiretorOutputPutDTO(diretor.Id,diretor.Nome);
         return Ok(DiretorOutPutPutDTO); 
-        } 
-        catch (Exception ex)
-        { 
-            return Conflict(ex.Message);
-        }
+
     } 
 
     //Dando delete passando um id em específico para deletar um diretor
     [HttpDelete("{id}")]
     public ActionResult Delete(long id)
     {
-        try
-        {
+
         var diretor = _context.Diretores.FirstOrDefault(diretor => diretor.Id == id);
         _context.Remove(diretor);
         _context.SaveChangesAsync();
         return Ok();
-        } catch (Exception ex)
-            { 
-                return Conflict(ex.Message);
-            }
+
     }
 }

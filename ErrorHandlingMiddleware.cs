@@ -1,5 +1,9 @@
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Net;
+using System.Text.Json;
 
 public class ErrorHandlingMiddleware{
     private readonly RequestDelegate Next;
@@ -10,8 +14,27 @@ public class ErrorHandlingMiddleware{
     }
 
     public async Task Invoke(HttpContext context){
-        //verificacao para ver se esta pegando o middleware nosso
-        System.Console.WriteLine("teste middleware");
-        await Next(context);
+        try
+        {
+            //verificacao para ver se esta pegando o middleware nosso
+            //System.Console.WriteLine(context.GetEndpoint());
+            await Next(context);
+        } catch (Exception ex)
+        { 
+            await HandleExceptionAsync(context,ex);
+            //return Conflict(ex.Message);
+        }
+    }
+
+    private static  Task HandleExceptionAsync(HttpContext context, Exception ex){
+        var code = HttpStatusCode.InternalServerError;
+        if(ex is Exception){
+            code = HttpStatusCode.NotFound;
+        }
+
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)code;
+        return context.Response.WriteAsync(JsonSerializer.Serialize(new {error = ex.Message}));
+
     }
 }
