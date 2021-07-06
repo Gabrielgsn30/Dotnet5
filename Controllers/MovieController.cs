@@ -20,7 +20,8 @@ public class MovieController : ControllerBase
          var filme = await _context.Filmes.Include(filme => filme.Diretor).FirstOrDefaultAsync(filme => filme.Id == id);
 
         if(filme == null){
-            return NotFound("Filme nao encontrado!!!");
+            //return NotFound("Filme nao encontrado!!!");
+            throw new Exception("Filme nao encontrado");
             
         }
          var movieOutputGetByIdDTO = new MovieOutputGetByIdDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId,filme.Diretor.Nome);
@@ -49,7 +50,7 @@ public class MovieController : ControllerBase
 
         }
         // return NotFound("Não existem diretores cadastrados!!!");
-        throw new Exception("Excecao filme nao encontrado");
+        throw new Exception("Filme nao encontrado");
     } 
 
     [HttpPost]
