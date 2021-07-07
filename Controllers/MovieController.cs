@@ -44,13 +44,15 @@ public class MovieController : ControllerBase
                 
          }).ToList());
 
-       if(movieOutputGetAllDTO.Any()){
+       if(!movieOutputGetAllDTO.Any()){
 
-             return movieOutputGetAllDTO;
-
-        }
         // return NotFound("Não existem diretores cadastrados!!!");
         throw new Exception("Filme nao encontrado");
+            
+
+        }
+         return movieOutputGetAllDTO;
+
     } 
 
     [HttpPost]
