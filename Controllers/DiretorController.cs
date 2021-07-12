@@ -100,7 +100,7 @@ public class DiretorController : ControllerBase {
     ///     }
     ///
     /// </remarks>
-    /// <param name="nome">Nome do diretor</param>
+    /// <param name="diretorInputPostDTO">Nome do diretor</param>
     /// <returns>O diretor criado</returns>
     /// <response code="200">Diretor foi criado com sucesso</response>
 
@@ -140,6 +140,7 @@ public class DiretorController : ControllerBase {
         ///       
         /// </remarks>
         /// <param name="id">Id do diretor</param>
+        /// <param name="diretorInputPutDTO">Id do diretor</param>
         /// <returns>Registro do diretor informado como parâmetro</returns>
         /// <response code="200">Diretor localizado sucesso</response>
 

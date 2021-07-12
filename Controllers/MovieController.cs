@@ -112,7 +112,7 @@ public class MovieController : ControllerBase
         ///     } 
         ///       
         /// </remarks>
-        /// <param name="inputDTO">Titulo do filme e id do diretor</param>
+        /// <param name="movieInputPostDTO">Titulo do filme e id do diretor</param>
         /// <returns>O filme cadastrado no banco</returns>
         /// <response code="200">Filme criado com sucesso</response>
 
@@ -152,7 +152,7 @@ public class MovieController : ControllerBase
         ///       
         /// </remarks>
         /// <param name="id">Id do filme</param>
-        /// <param name="inputDTO">Titulo do filme</param>
+        /// <param name="movieInputPutDTO">Titulo do filme</param>
         /// <returns>O filme atualizado no banco</returns>
         /// <response code="200">Filme atualizado com sucesso</response>
 
