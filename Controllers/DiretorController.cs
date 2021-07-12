@@ -22,8 +22,8 @@ public class DiretorController : ControllerBase {
         ///
         ///     GET/diretor/id
         ///     {
-        ///        "id": 2,
-        ///        "nome": "Benito Deltoro"
+        ///        "id": 1,
+        ///        "nome": "Deltoro"
         ///     } 
         ///       
         /// </remarks>
@@ -58,10 +58,6 @@ public class DiretorController : ControllerBase {
         ///        "id": 1,
         ///        "nome": "James Cameron"
         ///     },
-        ///     {
-        ///        "id": 2,
-        ///        "nome": "Benito Deltoro"
-        ///     } 
         ///       
         /// </remarks>
         /// <returns>Todos os diretores já cadastrados no banco</returns>
@@ -100,7 +96,7 @@ public class DiretorController : ControllerBase {
     ///
     ///     POST /diretor
     ///     {
-    ///        "nome": "Martin Scorsese",
+    ///        "nome": "Steven",
     ///     }
     ///
     /// </remarks>
@@ -139,7 +135,7 @@ public class DiretorController : ControllerBase {
         ///     GET/diretor/id
         ///     {
         ///        "id": 2,
-        ///        "nome": "Benito Deltoro"
+        ///        "nome": "Speilberg"
         ///     } 
         ///       
         /// </remarks>
@@ -173,8 +169,8 @@ public class DiretorController : ControllerBase {
         ///
         ///     DELETE/diretor/id
         ///     {
-        ///        "id": 7,
-        ///        "nome": "Michael Mann",
+        ///        "id": 1,
+        ///        "nome": "Gabriel",
         ///        "filmes": []
         ///     } 
         ///       

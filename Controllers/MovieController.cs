@@ -57,13 +57,13 @@ public class MovieController : ControllerBase
         ///
         ///     GET/filme
         ///     {
-        ///        "id": 2,
-        ///        "titulo": "Titanic",
+        ///        "id": 1,
+        ///        "titulo": "A Era do Gelo",
         ///        "ano": null
         ///     },
         ///     {
         ///        "id": 3,
-        ///        "titulo": "Et O Extraterrestre",
+        ///        "titulo": "Eu sou a Lenda",
         ///        "ano": null
         ///     } 
         ///       
@@ -107,7 +107,7 @@ public class MovieController : ControllerBase
         ///
         ///     POST/filme
         ///     {
-        ///        "titulo": "Et O Extraterrestre",
+        ///        "titulo": "It",
         ///        "diretorId": 3
         ///     } 
         ///       
@@ -147,7 +147,7 @@ public class MovieController : ControllerBase
         ///     PUT/filme/id
         ///     {
         ///        "id": 2,
-        ///        "titulo": "O Ultimo dos Moicanos"
+        ///        "titulo": "Titanic"
         ///     } 
         ///       
         /// </remarks>
@@ -180,7 +180,7 @@ public class MovieController : ControllerBase
         ///     DELETE/filme/id
         ///     {
         ///        "id": 2,
-        ///        "titulo": "O Ultimo dos Moicanos",
+        ///        "titulo": "Eu sou a Lenda",
         ///        "ano": null,
         ///        "genero": null,
         ///        "diretorId": 1,

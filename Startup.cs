@@ -14,7 +14,6 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.IO;
-using System;
 
 
 namespace Tarefa1
