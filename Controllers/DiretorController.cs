@@ -132,7 +132,7 @@ public class DiretorController : ControllerBase {
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET/diretor/id
+        ///     PUT/diretor/id
         ///     {
         ///        "id": 2,
         ///        "nome": "Speilberg"
