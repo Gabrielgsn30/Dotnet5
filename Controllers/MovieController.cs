@@ -14,6 +14,26 @@ public class MovieController : ControllerBase
         _context = context;
 
     }
+
+        /// <summary>
+        /// O método Get retorna um registro do filme de acordo com o parâmetro id informado.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET/filme/id
+        ///     {
+        ///        "id": 2,
+        ///        "titulo": "Et O Extraterrestre",
+        ///        "nomeDoDiretor": "Steven Spielberg"
+        ///     } 
+        ///       
+        /// </remarks>
+        /// <param name="id">Id do filme</param>
+        /// <returns>Registro do filme informado como parâmetro</returns>
+        /// <response code="200">Filme localizado sucesso</response>
+
+
     [HttpGet("{id}")]
     public async Task<ActionResult<MovieOutputGetByIdDTO>> GetById(long id)
     {
@@ -27,6 +47,29 @@ public class MovieController : ControllerBase
          var movieOutputGetByIdDTO = new MovieOutputGetByIdDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId,filme.Diretor.Nome);
          return Ok(movieOutputGetByIdDTO);
     }
+
+
+        /// <summary>
+        /// O método Get retorna uma lista de todos os filmes do banco.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET/filme
+        ///     {
+        ///        "id": 2,
+        ///        "titulo": "Titanic",
+        ///        "ano": null
+        ///     },
+        ///     {
+        ///        "id": 3,
+        ///        "titulo": "Et O Extraterrestre",
+        ///        "ano": null
+        ///     } 
+        ///       
+        /// </remarks>
+        /// <returns>Todos os filmes já cadastrados no banco</returns>
+        /// <response code="200">Filmes listados com sucesso</response>
     
     [HttpGet]
     public async Task<ActionResult<List<MovieOutputGetAllDTO>>> Get()
@@ -55,6 +98,25 @@ public class MovieController : ControllerBase
 
     } 
 
+
+        /// <summary>
+        /// O método Post registra um filme no banco de acordo com o nome informado e id do diretor.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST/filme
+        ///     {
+        ///        "titulo": "Et O Extraterrestre",
+        ///        "diretorId": 3
+        ///     } 
+        ///       
+        /// </remarks>
+        /// <param name="inputDTO">Titulo do filme e id do diretor</param>
+        /// <returns>O filme cadastrado no banco</returns>
+        /// <response code="200">Filme criado com sucesso</response>
+
+
     [HttpPost]
     public async Task <ActionResult<MovieOutputPostDTO>> Post ([FromBody] MovieInputPostDTO movieInputPostDTO){  
 
@@ -75,6 +137,26 @@ public class MovieController : ControllerBase
         return Ok (movieOutputPostDTO);
     }
 
+
+        /// <summary>
+        /// O método Put atualiza o id do filme, titulo e id do diretor no banco de acordo com o id informado.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT/filme/id
+        ///     {
+        ///        "id": 2,
+        ///        "titulo": "O Ultimo dos Moicanos"
+        ///     } 
+        ///       
+        /// </remarks>
+        /// <param name="id">Id do filme</param>
+        /// <param name="inputDTO">Titulo do filme</param>
+        /// <returns>O filme atualizado no banco</returns>
+        /// <response code="200">Filme atualizado com sucesso</response>
+
+
     [HttpPut("{id}")]
     public async Task<ActionResult<MovieOutputPutDTO>> Put(int id, [FromBody] MovieInputPutDTO movieInputPutDTO)
     {
@@ -88,6 +170,27 @@ public class MovieController : ControllerBase
         return Ok(MovieOutputPutDTO);
     }
 
+
+        /// <summary>
+        /// O método Delete remove um filme no banco de acordo com o id informado.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE/filme/id
+        ///     {
+        ///        "id": 2,
+        ///        "titulo": "O Ultimo dos Moicanos",
+        ///        "ano": null,
+        ///        "genero": null,
+        ///        "diretorId": 1,
+        ///        "diretor": null
+        ///     } 
+        ///       
+        /// </remarks>
+        /// <param name="id">Id do filme</param>
+        /// <returns>O filme excluido</returns>
+        /// <response code="200">Filme removido com sucesso</response>
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)

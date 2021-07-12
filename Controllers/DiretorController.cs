@@ -13,6 +13,24 @@ public class DiretorController : ControllerBase {
         _context = context;
 
     }
+
+        /// <summary>
+        /// O método Get retorna um registro do diretor de acordo com o parâmetro id informado.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET/diretor/id
+        ///     {
+        ///        "id": 2,
+        ///        "nome": "Benito Deltoro"
+        ///     } 
+        ///       
+        /// </remarks>
+        /// <param name="id">Id do diretor</param>
+        /// <returns>Registro do diretor informado como parâmetro</returns>
+        /// <response code="200">Diretor localizado sucesso</response>
+
     //Dando get passando referência do ID para trazer um diretor em específico
     [HttpGet("{id}")]
 
@@ -29,6 +47,26 @@ public class DiretorController : ControllerBase {
         // poode passar por objetos entre diretorOutputGetByIdDTO recebe o diretor . id ou nome em vez de passar por parametro no new no construtor
         return Ok(diretorOutputGetByIdDTO);
      }
+        /// <summary>
+        /// O método Get retorna uma lista de todos os diretores do banco.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET/diretor
+        ///     {
+        ///        "id": 1,
+        ///        "nome": "James Cameron"
+        ///     },
+        ///     {
+        ///        "id": 2,
+        ///        "nome": "Benito Deltoro"
+        ///     } 
+        ///       
+        /// </remarks>
+        /// <returns>Todos os diretores já cadastrados no banco</returns>
+        /// <response code="200">Diretores listados com sucesso</response>
+
     //Dando get para trazer todos os diretores
     [HttpGet]
     public async Task<ActionResult<List<DiretorOutputGetAllDTO>>> Get(){
@@ -50,8 +88,26 @@ public class DiretorController : ControllerBase {
 
          }
          return NotFound("Não existem diretores cadastrados!!!");
-                  
+
+
        }
+
+    /// <summary>
+    /// Cria um diretor
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     POST /diretor
+    ///     {
+    ///        "nome": "Martin Scorsese",
+    ///     }
+    ///
+    /// </remarks>
+    /// <param name="nome">Nome do diretor</param>
+    /// <returns>O diretor criado</returns>
+    /// <response code="200">Diretor foi criado com sucesso</response>
+
 
     //Dando post para cadastrar um diretor
     [HttpPost]
@@ -74,6 +130,24 @@ public class DiretorController : ControllerBase {
 
         }
     
+        /// <summary>
+        /// O método Get retorna um registro do diretor de acordo com o parâmetro id informado.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET/diretor/id
+        ///     {
+        ///        "id": 2,
+        ///        "nome": "Benito Deltoro"
+        ///     } 
+        ///       
+        /// </remarks>
+        /// <param name="id">Id do diretor</param>
+        /// <returns>Registro do diretor informado como parâmetro</returns>
+        /// <response code="200">Diretor localizado sucesso</response>
+
+    
     //Dando put passando um id de referencia para atualizar alguma informação do diretor
     [HttpPut("{id}")]
     public async Task<ActionResult<DiretorOutputPutDTO>> Put(int id, [FromBody] DiretorInputPutDTO diretorInputPutDTO)
@@ -90,6 +164,26 @@ public class DiretorController : ControllerBase {
         return Ok(DiretorOutPutPutDTO); 
 
     } 
+
+        /// <summary>
+        /// O método Delete remove um diretor no banco de acordo com o id informado.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE/diretor/id
+        ///     {
+        ///        "id": 7,
+        ///        "nome": "Michael Mann",
+        ///        "filmes": []
+        ///     } 
+        ///       
+        /// </remarks>
+        /// <param name="id">Id do diretor</param>
+        /// <returns>O diretor excluido</returns>
+        /// <response code="200">Diretor removido com sucesso</response>
+
+
 
     //Dando delete passando um id em específico para deletar um diretor
     [HttpDelete("{id}")]
