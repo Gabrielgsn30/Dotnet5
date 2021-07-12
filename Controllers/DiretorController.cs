@@ -113,11 +113,12 @@ public class DiretorController : ControllerBase {
         //variavel diretor vai instanciar um novo objetoInput
         var diretor = new Diretor(diretorInputPostDTO.Nome);
         //Validacao para ver se o campo nome está preenchido está preenchido
+        /*
         if (diretor.Nome  == null || diretor.Nome =="")
         {
                 return Conflict("Campo nome é obrigatório, digite o nome");
         }
-
+        */
         _context.Diretores.Add(diretor);
         await _context.SaveChangesAsync();
 

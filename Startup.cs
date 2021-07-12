@@ -14,7 +14,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.IO;
-
+using FluentValidation.AspNetCore;
 
 namespace Tarefa1
 {
@@ -31,7 +31,9 @@ namespace Tarefa1
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            object p = services.AddControllers().AddFluentValidation(options =>{
+                options.RegisterValidatorsFromAssemblyContaining<Startup>();
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tarefa1", Version = "v1" });
