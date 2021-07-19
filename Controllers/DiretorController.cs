@@ -2,15 +2,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
+using Tarefa1.Services;
 
 [ApiController]
 [Route("[controller]")]
 public class DiretorController : ControllerBase {
-    private readonly ApplicationDbContext _context;
-    public DiretorController(ApplicationDbContext context){
-        _context = context;
+    private readonly IDiretorService _DiretorService;
+    public DiretorController(IDiretorService DiretorService){
+        _DiretorService = DiretorService;
 
     }
 
@@ -37,7 +37,7 @@ public class DiretorController : ControllerBase {
     public async Task<ActionResult<DiretorOutputGetByIdDTO>> Get(long id)
     {
 
-        var diretor = await _context.Diretores.FirstOrDefaultAsync(diretor => diretor.Id == id);
+        var diretor = await _DiretorService.GetById(id);
 
         if(diretor == null){
             return NotFound("Diretor nao encontrado!!!");
@@ -71,7 +71,7 @@ public class DiretorController : ControllerBase {
         //jeito de implementar getall com DTO usando lista e selecionado os campos
 
          var diretorOutputGetAllDTO = new List<DiretorOutputGetAllDTO>();
-         var diretor = await _context.Diretores.ToListAsync();
+         var diretor = await _DiretorService.GetAll();
 
          diretorOutputGetAllDTO.AddRange(diretor.Select(dir => new DiretorOutputGetAllDTO(){
                 Id=dir.Id,
@@ -119,8 +119,7 @@ public class DiretorController : ControllerBase {
                 return Conflict("Campo nome é obrigatório, digite o nome");
         }
         */
-        _context.Diretores.Add(diretor);
-        await _context.SaveChangesAsync();
+        await _DiretorService.Add(diretor);
 
         var diretorOutputPostDTO = new DiretorOutputPostDTO(diretor.Id,diretor.Nome);
         return Ok(diretorOutputPostDTO);
@@ -155,8 +154,7 @@ public class DiretorController : ControllerBase {
 
         diretor.Id = id;
 
-        _context.Diretores.Update(diretor);
-        await _context.SaveChangesAsync();
+        await _DiretorService.Update(diretor);
 
         var DiretorOutPutPutDTO = new DiretorOutputPutDTO(diretor.Id,diretor.Nome);
         return Ok(DiretorOutPutPutDTO); 
@@ -185,12 +183,10 @@ public class DiretorController : ControllerBase {
 
     //Dando delete passando um id em específico para deletar um diretor
     [HttpDelete("{id}")]
-    public ActionResult Delete(long id)
+    public async Task<ActionResult> DeleteAsync(long id)
     {
 
-        var diretor = _context.Diretores.FirstOrDefault(diretor => diretor.Id == id);
-        _context.Remove(diretor);
-        _context.SaveChangesAsync();
+        var diretor = await _DiretorService.Delete(id);
         return Ok();
 
     }

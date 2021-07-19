@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.IO;
 using FluentValidation.AspNetCore;
+using Tarefa1.Services;
 
 namespace Tarefa1
 {
@@ -31,7 +32,11 @@ namespace Tarefa1
         public void ConfigureServices(IServiceCollection services)
         {
 
-            object p = services.AddControllers().AddFluentValidation(options =>{
+            services.Configure<ApplicationDbContext>(Configuration);
+            services.AddTransient<IDiretorService, DiretorService>();
+            services.AddTransient<IFilmeService, FilmeService>();
+            services.AddControllers().AddFluentValidation(options =>
+            {
                 options.RegisterValidatorsFromAssemblyContaining<Startup>();
             });
             services.AddSwaggerGen(c =>
