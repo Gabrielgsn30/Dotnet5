@@ -31,7 +31,7 @@ public class ErrorHandlingMiddleware{
         if(ex is Exception){
             code = HttpStatusCode.NotFound;
         }
-
+        //incluir mais opções NullReferenceException por exemplo criar swith cases
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)code;
         return context.Response.WriteAsync(JsonSerializer.Serialize(new {error = ex.Message}));
