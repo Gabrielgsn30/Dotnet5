@@ -4,13 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Tarefa1.Services;
+using Microsoft.AspNetCore.Http;
+using System.Threading;
 
 [ApiController]
 [Route("[controller]")]
 public class DiretorController : ControllerBase {
-    private readonly IDiretorService _DiretorService;
+    private readonly IDiretorService _diretorService;
     public DiretorController(IDiretorService DiretorService){
-        _DiretorService = DiretorService;
+        _diretorService = DiretorService;
 
     }
 
@@ -33,19 +35,11 @@ public class DiretorController : ControllerBase {
 
     //Dando get passando referência do ID para trazer um diretor em específico
     [HttpGet("{id}")]
+    public async Task<ActionResult<DiretorOutputGetByIdDTO>> Get(long id) {
+        var diretor = await _diretorService.GetById(id);
 
-    public async Task<ActionResult<DiretorOutputGetByIdDTO>> Get(long id)
-    {
-
-        var diretor = await _DiretorService.GetById(id);
-
-        if(diretor == null){
-            return NotFound("Diretor nao encontrado!!!");
-            
-        }
-        var diretorOutputGetByIdDTO = new DiretorOutputGetByIdDTO(diretor.Id,diretor.Nome);
-        // poode passar por objetos entre diretorOutputGetByIdDTO recebe o diretor . id ou nome em vez de passar por parametro no new no construtor
-        return Ok(diretorOutputGetByIdDTO);
+        var outputDto = new DiretorOutputGetByIdDTO(diretor.Id, diretor.Nome);
+        return Ok(outputDto);
      }
         /// <summary>
         /// O método Get retorna uma lista de todos os diretores do banco.
@@ -65,28 +59,9 @@ public class DiretorController : ControllerBase {
 
     //Dando get para trazer todos os diretores
     [HttpGet]
-    public async Task<ActionResult<List<DiretorOutputGetAllDTO>>> Get(){
-
-        //https://forums.asp.net/t/2161265.aspx?How+can+I+implement+GetAll+Delete+Update+repository+from+Generic+Repository+into+repository
-        //jeito de implementar getall com DTO usando lista e selecionado os campos
-
-         var diretorOutputGetAllDTO = new List<DiretorOutputGetAllDTO>();
-         var diretor = await _DiretorService.GetAll();
-
-         diretorOutputGetAllDTO.AddRange(diretor.Select(dir => new DiretorOutputGetAllDTO(){
-                Id=dir.Id,
-                Nome=dir.Nome
-         }).ToList());
-
-         if(diretorOutputGetAllDTO.Any()){
-
-             return diretorOutputGetAllDTO;
-
-         }
-         return NotFound("Não existem diretores cadastrados!!!");
-
-
-       }
+    public async Task<ActionResult<DiretorListOutputGetAllDTO>> Get(CancellationToken cancellationToken, int limit = 5, int page = 1) {
+        return await _diretorService.GetByPageAsync(limit, page, cancellationToken);
+    }
 
     /// <summary>
     /// Cria um diretor
@@ -107,24 +82,12 @@ public class DiretorController : ControllerBase {
 
     //Dando post para cadastrar um diretor
     [HttpPost]
-    public async Task<ActionResult<DiretorOutputPostDTO>> Post([FromBody] DiretorInputPostDTO diretorInputPostDTO) {
-        //DTO faz a tranasferencia de dados entre o DTO para o objeto diretor(nesse caso o nome)
-        //Vai pedir somente o nome para cadastro que realmente é o que deve ser digitado e nao os outros campos
-        //variavel diretor vai instanciar um novo objetoInput
-        var diretor = new Diretor(diretorInputPostDTO.Nome);
-        //Validacao para ver se o campo nome está preenchido está preenchido
-        /*
-        if (diretor.Nome  == null || diretor.Nome =="")
-        {
-                return Conflict("Campo nome é obrigatório, digite o nome");
-        }
-        */
-        await _DiretorService.Add(diretor);
+    public async Task<ActionResult<DiretorOutputPostDTO>> Post([FromBody] DiretorInputPostDTO diretorInputPostDto) {
+        var diretor = await _diretorService.Add(new Diretor(diretorInputPostDto.Nome));
 
-        var diretorOutputPostDTO = new DiretorOutputPostDTO(diretor.Id,diretor.Nome);
-        return Ok(diretorOutputPostDTO);
-
-        }
+        var diretorOutputPostDto = new DiretorOutputPostDTO(diretor.Id, diretor.Nome);
+        return Ok(diretorOutputPostDto);
+    }
     
         /// <summary>
         /// O método Get retorna um registro do diretor de acordo com o parâmetro id informado.
@@ -147,19 +110,12 @@ public class DiretorController : ControllerBase {
     
     //Dando put passando um id de referencia para atualizar alguma informação do diretor
     [HttpPut("{id}")]
-    public async Task<ActionResult<DiretorOutputPutDTO>> Put(int id, [FromBody] DiretorInputPutDTO diretorInputPutDTO)
-    {
-        //variavel diretor vai instanciar um novo objetoInput
-        var diretor = new Diretor(diretorInputPutDTO.Nome);
+    public async Task<ActionResult<DiretorOutputPutDTO>> Put(long id, [FromBody] DiretorInputPutDTO diretorInputPutDto) {
+        var diretor = await _diretorService.Update(new Diretor(diretorInputPutDto.Nome), id);
 
-        diretor.Id = id;
-
-        await _DiretorService.Update(diretor);
-
-        var DiretorOutPutPutDTO = new DiretorOutputPutDTO(diretor.Id,diretor.Nome);
-        return Ok(DiretorOutPutPutDTO); 
-
-    } 
+        var diretorOutputDto = new DiretorOutputPutDTO(diretor.Id, diretor.Nome);
+        return Ok(diretorOutputDto);
+    }
 
         /// <summary>
         /// O método Delete remove um diretor no banco de acordo com o id informado.
@@ -183,11 +139,8 @@ public class DiretorController : ControllerBase {
 
     //Dando delete passando um id em específico para deletar um diretor
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteAsync(long id)
-    {
-
-        var diretor = await _DiretorService.Delete(id);
+    public async Task<ActionResult> Delete(long id) {
+        await _diretorService.Delete(id);
         return Ok();
-
     }
 }

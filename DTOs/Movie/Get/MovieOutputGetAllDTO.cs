@@ -1,4 +1,14 @@
 using System.Collections.Generic;
+
+public class MovieListOutputGetAllDTO {
+        public int CurrentPage { get; init; }
+
+        public int TotalItems { get; init; }
+
+        public int TotalPages { get; init; }
+
+        public List<MovieOutputGetAllDTO> Items { get; init; }
+}
 public class MovieOutputGetAllDTO {
     public int Id { get; set; }
     public string Titulo { get; set; }
