@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using Tarefa1.Services;
+using System.Threading;
 
 [ApiController]
 [Route("[controller]")] //movie
 public class MovieController : ControllerBase
 {
-   private readonly IFilmeService _FilmeService;
-    public MovieController(IFilmeService FilmeService){
-        _FilmeService = FilmeService;
+   private readonly IFilmeService _filmeService;
+    public MovieController(IFilmeService filmeService){
+        _filmeService = filmeService;
 
     }
 
@@ -37,13 +38,8 @@ public class MovieController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<MovieOutputGetByIdDTO>> GetById(long id)
     {
-         var filme = await _FilmeService.GetById(id);
+         var filme = await _filmeService.GetById(id);
 
-        if(filme == null){
-            //return NotFound("Filme nao encontrado!!!");
-            throw new Exception("Filme nao encontrado");
-            
-        }
          var movieOutputGetByIdDTO = new MovieOutputGetByIdDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId,filme.Diretor.Nome);
          return Ok(movieOutputGetByIdDTO);
     }
@@ -72,31 +68,9 @@ public class MovieController : ControllerBase
         /// <response code="200">Filmes listados com sucesso</response>
     
     [HttpGet]
-    public async Task<ActionResult<List<MovieOutputGetAllDTO>>> Get()
-    {
-        //return await _context.Filmes.ToListAsync();
-         var movieOutputGetAllDTO = new List<MovieOutputGetAllDTO>();
-         var filme = await _FilmeService.GetAll();
-
-         movieOutputGetAllDTO.AddRange(filme.Select(dir => new MovieOutputGetAllDTO(){
-                Id=dir.Id,
-                Titulo=dir.Titulo,
-                Ano=dir.Ano,
-                Genero=dir.Genero,
-                DiretorId=dir.DiretorId
-                
-         }).ToList());
-
-       if(!movieOutputGetAllDTO.Any()){
-
-        // return NotFound("Não existem diretores cadastrados!!!");
-        throw new Exception("Filme nao encontrado");
-            
-
-        }
-         return movieOutputGetAllDTO;
-
-    } 
+    public async Task<ActionResult<MovieListOutputGetAllDTO>> Get(CancellationToken cancellationToken, int limit = 5, int page = 1) {
+        return await _filmeService.GetByPageAsync(limit, page, cancellationToken);        
+    }
 
 
         /// <summary>
@@ -120,18 +94,7 @@ public class MovieController : ControllerBase
     [HttpPost]
     public async Task <ActionResult<MovieOutputPostDTO>> Post ([FromBody] MovieInputPostDTO movieInputPostDTO){  
 
-        var filme = new Filme(movieInputPostDTO.Titulo,movieInputPostDTO.Genero,movieInputPostDTO.Ano,movieInputPostDTO.DiretorId);  
-        //validacao ruim se está nullo
-        if (filme.Titulo == null || filme.Titulo =="")
-        {
-            return Conflict("Campo título é obrigatório, digite o título do filme");
-        } 
-        var diretor = await _FilmeService.GetDiretorId(movieInputPostDTO.DiretorId); 
-        if (diretor == null) {
-            return NotFound("Diretor informado não existe");
-        }
-        await _FilmeService.Add(filme);
-
+        var filme = await _filmeService.Add(new Filme(movieInputPostDTO.Titulo,movieInputPostDTO.Genero,movieInputPostDTO.Ano,movieInputPostDTO.DiretorId));  
         var movieOutputPostDTO = new MovieOutputPostDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId);
         return Ok (movieOutputPostDTO);
     }
@@ -162,7 +125,7 @@ public class MovieController : ControllerBase
         var filme = new Filme(movieInputPutDTO.Titulo,movieInputPutDTO.Genero,movieInputPutDTO.Ano,movieInputPutDTO.DiretorId);
         filme.Id = id;
 
-        await _FilmeService.Update(filme);
+        await _filmeService.Update(filme);
 
         var MovieOutputPutDTO = new MovieOutputPutDTO(filme.Id,filme.Titulo,filme.Genero,filme.Ano,filme.DiretorId);
         return Ok(MovieOutputPutDTO);
@@ -193,7 +156,7 @@ public class MovieController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)
     {
-    var filme = await _FilmeService.Delete(id);
+    var filme = await _filmeService.Delete(id);
 
       return Ok(filme);
     }

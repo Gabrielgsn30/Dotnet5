@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Tarefa1;
@@ -13,11 +16,23 @@ namespace Tarefa1.Services
             _context = context;
         }
 
-        public async Task<List<Filme>> GetAll()
-        {
-            var filmes = await _context.Filmes.ToListAsync();
-            return filmes;
+   public async Task<MovieListOutputGetAllDTO> GetByPageAsync(int limit, int page, CancellationToken cancellationToken) {
+        var pagedModel = await _context.Filmes
+                .AsNoTracking()
+                .OrderBy(p => p.Id)
+                .PaginateAsync(page, limit, cancellationToken);
+
+        if (!pagedModel.Items.Any()) {
+            throw new Exception("Não existem filmes cadastrados!");
         }
+
+        return new MovieListOutputGetAllDTO {
+            CurrentPage = pagedModel.CurrentPage,
+            TotalPages = pagedModel.TotalPages,
+            TotalItems = pagedModel.TotalItems,
+            Items = pagedModel.Items.Select(filme => new MovieOutputGetAllDTO(filme.Id, filme.Titulo,filme.Ano,filme.Genero,filme.DiretorId)).ToList()
+        };
+    }
 
         public async Task<Filme> GetById(long id)
         {

@@ -26,8 +26,5 @@ public class MovieOutputGetAllDTO {
         Genero =  genero;
         DiretorId = diretorId;
     }
-    public MovieOutputGetAllDTO()
-    {
-    }
 
 }

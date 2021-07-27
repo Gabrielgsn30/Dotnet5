@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Threading;
 using Tarefa1;
 
 namespace Tarefa1.Services
@@ -8,7 +9,7 @@ namespace Tarefa1.Services
     {
         Task<Filme> Add(Filme filme);
         Task<Filme> Delete(long id);
-        Task<List<Filme>> GetAll();
+        Task<MovieListOutputGetAllDTO> GetByPageAsync(int limit, int page, CancellationToken cancellationToken);
         Task<Filme> GetById(long id);
         Task<Diretor> GetDiretorId(long id);
         Task<Filme> Update(Filme filme);
