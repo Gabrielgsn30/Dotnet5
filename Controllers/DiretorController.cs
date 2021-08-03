@@ -6,7 +6,9 @@ using System.Linq;
 using Tarefa1.Services;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
+using Microsoft.AspNetCore.Authorization;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class DiretorController : ControllerBase {

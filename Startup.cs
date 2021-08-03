@@ -36,7 +36,7 @@ namespace Tarefa1
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.Configure<ApplicationDbContext>(Configuration);
+            //services.Configure<ApplicationDbContext>(Configuration);
             services.AddTransient<IDiretorService, DiretorService>();
             services.AddTransient<IFilmeService, FilmeService>();
             services.AddControllers().AddFluentValidation(options =>
@@ -127,6 +127,8 @@ namespace Tarefa1
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
