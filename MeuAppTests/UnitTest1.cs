@@ -1,15 +1,18 @@
 using System;
 using Xunit;
+using FluentValidation.TestHelper;
 
 namespace MeuAppTests
 {
     public class UnitTest1
     {
         [Fact]
-        public void CriaUmDiretor()
+        public void NomeDiretorAprentarErroSeForVazio()
         {
-            var diretor = new Diretor("Teste");
-            Assert.Equal("Teste",diretor.Nome);
+            var validator = new DiretorInputPostDTOValidator();
+            var dto = new DiretorInputPostDTO { Nome = null };
+            var result = validator.TestValidate(dto);
+            result.ShouldHaveValidationErrorFor(diretor => diretor.Nome);
         }
     }
 }
