@@ -21,7 +21,7 @@ public static class DataPagerExtension
         paged.CurrentPage = page;
         paged.PageSize = limit;
 
-        var totalItemsCountTask = query.CountAsync(cancellationToken);
+        //var totalItemsCountTask = query.CountAsync(cancellationToken);
 
         var startRow = (page - 1) * limit;
         paged.Items = await query
@@ -29,7 +29,8 @@ public static class DataPagerExtension
                     .Take(limit)
                     .ToListAsync(cancellationToken);
 
-        paged.TotalItems = await totalItemsCountTask;
+        //paged.TotalItems = await totalItemsCountTask;
+        paged.TotalItems = query.Count();
         paged.TotalPages = (int)Math.Ceiling(paged.TotalItems / (double)limit);
 
         return paged;
